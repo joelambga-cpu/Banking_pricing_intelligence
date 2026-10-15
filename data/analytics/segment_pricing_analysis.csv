@@ -1,0 +1,4 @@
+segment,total_customers,target_customers,target_customer_pct,total_deposits_eur,target_deposits_eur,target_deposit_pct,target_avg_outflow_90d_pct,targeted_25bps_cost_eur,declining_customers,declining_customer_pct,outflow_proxy_eur,outflow_proxy_pct_of_deposits,target_outflow_proxy_eur
+Affluent,1229,252,20.5,101912691.21,27013495.68,26.51,-10.82,67533.74,697,56.71,4409053.39,4.33,2902031.83
+Private,243,67,27.57,70952287.23,19390028.29,27.33,-10.77,48475.07,161,66.26,3463635.64,4.88,2065722.07
+Mass,3528,29,0.82,56558594.06,2235203.37,3.95,-10.22,5588.01,1988,56.35,1942135.9,3.43,220985.02

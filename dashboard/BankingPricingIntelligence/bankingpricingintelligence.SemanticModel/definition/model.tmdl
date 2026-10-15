@@ -1,0 +1,28 @@
+model Model
+	culture: it-IT
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: it-IT
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["StrategyComparison","SegmentAnalysis","RetentionScenarios","ProfitabilityProxy","RegimeTransitions","InterestRates","Customers"]
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table StrategyComparison
+ref table SegmentAnalysis
+ref table RetentionScenarios
+ref table ProfitabilityProxy
+ref table RegimeTransitions
+ref table DateTableTemplate_ffb55171-5b30-441e-8112-ceeaaed79b68
+ref table LocalDateTable_180883c9-c3de-4cd1-b2ac-53ca5a414ea9
+ref table InterestRates
+ref table Customers
+ref table LocalDateTable_69c736e8-82b0-4e30-95eb-f9216044998b
+
+ref cultureInfo it-IT
+

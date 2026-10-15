@@ -1,0 +1,117 @@
+table RegimeTransitions
+	lineageTag: 1a498bd9-d594-4e1a-b3cd-f087b4a3b64c
+
+	measure 'Market Regime ultimo' = VAR D = MAXX(ALL(RegimeTransitions), RegimeTransitions[period]) RETURN CALCULATE(SELECTEDVALUE(RegimeTransitions[pricing_regime]), REMOVEFILTERS(RegimeTransitions), RegimeTransitions[period] = D)
+		displayFolder: Market and Regimes
+		lineageTag: 44acf13f-f5b6-5009-a3e1-3e9707d479ce
+
+	measure 'Market Regime precedente' = VAR D = MAXX(ALL(RegimeTransitions), RegimeTransitions[period]) RETURN "Mese precedente: " & CALCULATE(SELECTEDVALUE(RegimeTransitions[previous_regime]), REMOVEFILTERS(RegimeTransitions), RegimeTransitions[period] = D)
+		displayFolder: Market and Regimes
+		lineageTag: 75ede2b7-e517-59ea-a7ae-640fc9aa81e6
+
+	measure 'Market Mesi' = COUNTROWS(RegimeTransitions)
+		formatString: 0
+		displayFolder: Market and Regimes
+		lineageTag: 5fa78200-d943-57fa-bacf-d3b6d3d63210
+
+	measure 'Market Cambi' = CALCULATE(COUNTROWS(RegimeTransitions), RegimeTransitions[regime_status] = "REGIME CHANGE")
+		formatString: 0
+		displayFolder: Market and Regimes
+		lineageTag: 77871e04-6841-548c-ada6-3d9233d97bf5
+
+	measure 'Market Sintesi storico' = FORMAT([Market Mesi], "0") & " MESI  /  " & FORMAT([Market Cambi], "0") & " CAMBI DI REGIME"
+		displayFolder: Market and Regimes
+		lineageTag: d49ca624-3e9f-5c25-8b21-89aed1dbd5f3
+
+	measure 'Market Strip COMFORTABLE' = IF(SELECTEDVALUE(RegimeTransitions[pricing_regime]) = "COMFORTABLE", 1, BLANK())
+		formatString: 0
+		displayFolder: Market and Regimes
+		lineageTag: 47864ebc-0172-5789-9b44-2e2786b8040c
+
+	measure 'Market Strip FUNDING PRESSURE' = IF(SELECTEDVALUE(RegimeTransitions[pricing_regime]) = "FUNDING PRESSURE", 1, BLANK())
+		formatString: 0
+		displayFolder: Market and Regimes
+		lineageTag: 044354f1-cf15-5c91-a7a4-417641550e82
+
+	measure 'Market Strip MARGIN PRESSURE' = IF(SELECTEDVALUE(RegimeTransitions[pricing_regime]) = "MARGIN PRESSURE", 1, BLANK())
+		formatString: 0
+		displayFolder: Market and Regimes
+		lineageTag: ec643956-bf4a-5c37-a4b4-d1392d5478ea
+
+	measure 'Market Strip CRITICAL PRESSURE' = IF(SELECTEDVALUE(RegimeTransitions[pricing_regime]) = "CRITICAL PRESSURE", 1, BLANK())
+		formatString: 0
+		displayFolder: Market and Regimes
+		lineageTag: 56e6431b-e452-5044-a999-26f80a7391f1
+
+	column period
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 48c94b0c-62f2-4ebb-bc25-ede623ba9a82
+		summarizeBy: none
+		sourceColumn: period
+
+		variation Variazione
+			isDefault
+			relationship: f4a5d2fc-73a1-46fe-8b4e-6afefbb5da92
+			defaultHierarchy: LocalDateTable_180883c9-c3de-4cd1-b2ac-53ca5a414ea9.'Gerarchia data'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column previous_regime
+		dataType: string
+		lineageTag: ca7cad4e-6590-42e4-9ba9-3fd1884ae539
+		summarizeBy: none
+		sourceColumn: previous_regime
+
+		annotation SummarizationSetBy = Automatic
+
+	column pricing_regime
+		dataType: string
+		lineageTag: b7fd428c-9c15-454c-a868-a34a11d5b14a
+		summarizeBy: none
+		sourceColumn: pricing_regime
+
+		annotation SummarizationSetBy = Automatic
+
+	column deposit_rate_pct
+		dataType: double
+		formatString: 0
+		lineageTag: 7a765524-9ec1-48a6-9870-c7179decbb42
+		summarizeBy: sum
+		sourceColumn: deposit_rate_pct
+
+		annotation SummarizationSetBy = Automatic
+
+	column mortgage_deposit_spread_pp
+		dataType: double
+		formatString: 0
+		lineageTag: 3e1340a3-ff8f-4307-81be-66513af3ffd3
+		summarizeBy: sum
+		sourceColumn: mortgage_deposit_spread_pp
+
+		annotation SummarizationSetBy = Automatic
+
+	column regime_status
+		dataType: string
+		lineageTag: 53721ae7-85a4-4807-8b67-9858d629da37
+		summarizeBy: none
+		sourceColumn: regime_status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition RegimeTransitions = m
+		mode: import
+		source =
+				let
+				    Origine = Csv.Document(File.Contents("C:\Users\joela\Desktop\01.DATA BI\1.Progetti attivi\banking-pricing-intelligence\data\analytics\regime_transitions.csv"),[Delimiter=",", Columns=6, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Intestazioni alzate di livello" = Table.PromoteHeaders(Origine, [PromoteAllScalars=true]),
+				    #"Modificato tipo" = Table.TransformColumnTypes(#"Intestazioni alzate di livello",{{"period", type date}, {"previous_regime", type text}, {"pricing_regime", type text}, {"deposit_rate_pct", type number}, {"mortgage_deposit_spread_pp", type number}, {"regime_status", type text}}, "en-US")
+				in
+				    #"Modificato tipo"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigazione
+

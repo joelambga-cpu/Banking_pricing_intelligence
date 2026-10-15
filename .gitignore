@@ -1,0 +1,54 @@
+# Virtual environment
+.venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# Local database
+data/database/*.db
+
+# Temporary files
+*.log
+
+# Local release artifacts and isolated checks
+releases/
+docs/evidence/release-check-*/
+docs/evidence/model_before_business_answers.zip
+docs/evidence/segment_table_before_release.json
+
+# Local Power BI and release artifacts
+**/.pbi/
+**/localSettings.json
+**/cache.abf
+**/__pycache__/
+.venv/
+releases/
+docs/evidence/model_before_business_answers.zip
+docs/evidence/release-check-*/
+
+PS C:\Users\joela\Desktop\01.DATA BI\1.Progetti attivi\banking-pricing-intelligence> (Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned) ; (& "c:\Users\joela\Desktop\01.DATA BI\1.Progetti attivi\banking-pricing-intelligence\.venv\Scripts\Activate.ps1")
+(.venv) PS C:\Users\joela\Desktop\01.DATA BI\1.Progetti attivi\banking-pricing-intelligence> Get-Location
+>> git status
+>> git remote -v
+
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+Path                                                                            
+----                                                                            
+C:\Users\joela\Desktop\01.DATA BI\1.Progetti attivi\banking-pricing-intelligence
+
+
+docs/PROGRAMMA_OPERATIVO.md
+docs/PREPARAZIONE_PUBBLICAZIONE.md

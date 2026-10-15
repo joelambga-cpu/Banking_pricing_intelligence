@@ -1,0 +1,118 @@
+{
+  "scope": "Existing local snapshot; no external refresh or native Power BI validation",
+  "market_period": [
+    "2023-01-01",
+    "2026-08-01"
+  ],
+  "months": 44,
+  "customers": 5000,
+  "latest_market": {
+    "period": "2026-08-01",
+    "deposit_rate_pct": "2.46",
+    "mortgage_rate_pct": "3.55",
+    "ecb_dfr_pct": "2.25",
+    "deposit_gap_pp": "-0.20999999999999996",
+    "mortgage_deposit_spread_pp": "1.0899999999999999"
+  },
+  "queries": {
+    "07_strategy_cost_comparison": [
+      {
+        "strategy": "BLANKET +25 BPS",
+        "customers_affected": 5000,
+        "deposits_covered_eur": 229423572.5,
+        "estimated_annual_cost_eur": 573558.93
+      },
+      {
+        "strategy": "TARGETED +25 BPS",
+        "customers_affected": 348,
+        "deposits_covered_eur": 48638727.34,
+        "estimated_annual_cost_eur": 121596.82
+      }
+    ],
+    "08_segment_pricing_analysis": [
+      {
+        "segment": "Affluent",
+        "total_customers": 1229,
+        "target_customers": 252,
+        "target_customer_pct": 20.5,
+        "total_deposits_eur": 101912691.21,
+        "target_deposits_eur": 27013495.68,
+        "target_deposit_pct": 26.51,
+        "target_avg_outflow_90d_pct": -10.82,
+        "targeted_25bps_cost_eur": 67533.74,
+        "declining_customers": 697,
+        "declining_customer_pct": 56.71,
+        "outflow_proxy_eur": 4409053.39,
+        "outflow_proxy_pct_of_deposits": 4.33,
+        "target_outflow_proxy_eur": 2902031.83
+      },
+      {
+        "segment": "Private",
+        "total_customers": 243,
+        "target_customers": 67,
+        "target_customer_pct": 27.57,
+        "total_deposits_eur": 70952287.23,
+        "target_deposits_eur": 19390028.29,
+        "target_deposit_pct": 27.33,
+        "target_avg_outflow_90d_pct": -10.77,
+        "targeted_25bps_cost_eur": 48475.07,
+        "declining_customers": 161,
+        "declining_customer_pct": 66.26,
+        "outflow_proxy_eur": 3463635.64,
+        "outflow_proxy_pct_of_deposits": 4.88,
+        "target_outflow_proxy_eur": 2065722.07
+      },
+      {
+        "segment": "Mass",
+        "total_customers": 3528,
+        "target_customers": 29,
+        "target_customer_pct": 0.82,
+        "total_deposits_eur": 56558594.06,
+        "target_deposits_eur": 2235203.37,
+        "target_deposit_pct": 3.95,
+        "target_avg_outflow_90d_pct": -10.22,
+        "targeted_25bps_cost_eur": 5588.01,
+        "declining_customers": 1988,
+        "declining_customer_pct": 56.35,
+        "outflow_proxy_eur": 1942135.9,
+        "outflow_proxy_pct_of_deposits": 3.43,
+        "target_outflow_proxy_eur": 220985.02
+      }
+    ],
+    "10_profitability_proxy": [
+      {
+        "baseline_deposit_rate_pct": 1.937,
+        "blanket_deposit_rate_pct": 2.187,
+        "targeted_deposit_rate_pct": 1.99,
+        "baseline_spread_proxy_pp": 1.613,
+        "blanket_spread_proxy_pp": 1.363,
+        "targeted_spread_proxy_pp": 1.56
+      }
+    ]
+  },
+  "additional_results": {
+    "portfolio_weighted_rate_pct": 1.936765984054668,
+    "benchmark_minus_portfolio_pp": 0.5232340159453318,
+    "outflow_proxy_eur": 9814824.94,
+    "target_outflow_proxy_eur": 5188738.92,
+    "blanket_retained_base_eur": 2453706.23,
+    "targeted_retained_base_eur": 1297184.73
+  },
+  "validation": {
+    "independent_decimal_recomputation": "PASS",
+    "original_nine_segment_columns": "UNCHANGED",
+    "segments_checked": [
+      "Affluent",
+      "Private",
+      "Mass"
+    ]
+  },
+  "sha256": {
+    "data\\simulated\\customer_portfolio.csv": "ff4ba8c1570f6f701a74d7375f28d644ed52b88dfe370ade7d5a3c3bdc571f85",
+    "data\\processed\\banking_interest_rates_monthly.csv": "3e9d049d477f5400a13cd136a613a154d582b0a1a2681ab59648e42744f9ac8e",
+    "data\\database\\banking_pricing.db": "344890a2690e9f5e6a68407d8f0355954f692c8431fd79e7f80c51dffb5dee14",
+    "sql\\analysis\\07_strategy_cost_comparison.sql": "5dcc55efbfff64c3722e9020f1d97695c4fc946f7fcc87b29515a91f472007a7",
+    "sql\\analysis\\08_segment_pricing_analysis.sql": "b00cd5afe60df93194d559b5ceaf018f421f5692775d818114c657348548db40",
+    "sql\\analysis\\10_profitability_proxy.sql": "3b4a6bc7583cd507a631cc329d070c5a8ef3657ecc05a06110aa186b535fc52b"
+  }
+}

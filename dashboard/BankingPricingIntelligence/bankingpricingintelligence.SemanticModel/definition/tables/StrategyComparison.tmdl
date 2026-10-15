@@ -1,0 +1,100 @@
+table StrategyComparison
+	lineageTag: c764b98c-2799-418a-857c-842df4803453
+
+	measure 'Risparmio Targeted vs Blanket %' =
+			
+			VAR Blanket =
+			    CALCULATE(
+			        SUM(StrategyComparison[estimated_annual_cost_eur]),
+			        StrategyComparison[strategy] = "BLANKET +25 BPS"
+			    )
+			VAR Targeted =
+			    CALCULATE(
+			        SUM(StrategyComparison[estimated_annual_cost_eur]),
+			        StrategyComparison[strategy] = "TARGETED +25 BPS"
+			    )
+			RETURN
+			    DIVIDE(
+			        Blanket - Targeted,
+			        Blanket
+			    )
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: 13345896-da25-4649-9e7c-99ba77cedb56
+
+	measure 'Overview Costo annuo mila EUR' = DIVIDE(SUM(StrategyComparison[estimated_annual_cost_eur]), 1000)
+		formatString: #,0.0" mila €"
+		displayFolder: Executive Overview
+		lineageTag: 5b75a2ef-4657-43ed-9be4-2ff5514c9ecd
+
+	measure 'Overview Risparmio annuo mila EUR' =
+			VAR Blanket = CALCULATE(SUM(StrategyComparison[estimated_annual_cost_eur]), StrategyComparison[strategy] = "BLANKET +25 BPS")
+			VAR Targeted = CALCULATE(SUM(StrategyComparison[estimated_annual_cost_eur]), StrategyComparison[strategy] = "TARGETED +25 BPS")
+			RETURN DIVIDE(Blanket - Targeted, 1000)
+		formatString: #,0" mila €"
+		displayFolder: Executive Overview
+		lineageTag: 56f6c4a8-7525-4c1b-a53c-2318b8b80f52
+
+	column strategy
+		dataType: string
+		lineageTag: b23fb393-5380-4bd1-a475-0632e8af5dc1
+		summarizeBy: none
+		sourceColumn: strategy
+
+		annotation SummarizationSetBy = Automatic
+
+	column customers_affected
+		dataType: int64
+		formatString: 0
+		lineageTag: 0166cede-86dc-4d8d-b1dc-9b51c8e39b38
+		summarizeBy: sum
+		sourceColumn: customers_affected
+
+		annotation SummarizationSetBy = Automatic
+
+	column deposits_covered_eur
+		dataType: double
+		formatString: 0
+		lineageTag: ec5e78ed-bc76-40e6-9f3b-1b88679ec855
+		summarizeBy: sum
+		sourceColumn: deposits_covered_eur
+
+		annotation SummarizationSetBy = Automatic
+
+	column estimated_annual_cost_eur
+		dataType: double
+		formatString: 0
+		lineageTag: 984c15f7-dbfc-4f0e-9a35-c9bc65606d20
+		summarizeBy: sum
+		sourceColumn: estimated_annual_cost_eur
+
+		annotation SummarizationSetBy = Automatic
+
+	partition StrategyComparison = m
+		mode: import
+		source =
+				let
+				    Origine = Csv.Document(
+				        File.Contents("C:\Users\joela\Desktop\01.DATA BI\1.Progetti attivi\banking-pricing-intelligence\data\analytics\strategy_cost_comparison.csv"),
+				        [Delimiter=",", Columns=4, Encoding=1252, QuoteStyle=QuoteStyle.None]
+				    ),
+				    #"Intestazioni alzate di livello" = Table.PromoteHeaders(
+				        Origine,
+				        [PromoteAllScalars=true]
+				    ),
+				    #"Modificato tipo" = Table.TransformColumnTypes(
+				        #"Intestazioni alzate di livello",
+				        {
+				            {"strategy", type text},
+				            {"customers_affected", Int64.Type},
+				            {"deposits_covered_eur", type number},
+				            {"estimated_annual_cost_eur", type number}
+				        },
+				        "en-US"
+				    )
+				in
+				    #"Modificato tipo"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigazione
+

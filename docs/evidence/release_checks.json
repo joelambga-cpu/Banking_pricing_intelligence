@@ -1,0 +1,46 @@
+{
+  "raw_to_processed": {
+    "italy_household_deposit_rate": {
+      "raw": "data\\raw\\italy_household_deposit_rate_2026-10-07.csv",
+      "rows": 44,
+      "sha256": "0dbc2a961224709874926b384c892cf1378d39dae57ad4fcbb007d67debc8cd1",
+      "status": "PASS"
+    },
+    "italy_household_mortgage_rate": {
+      "raw": "data\\raw\\italy_household_mortgage_rate_2026-10-07.csv",
+      "rows": 44,
+      "sha256": "a2771555ce96d70692db57fa9dfe16f5558774046071cba85701c228e2a0c5b3",
+      "status": "PASS"
+    },
+    "ecb_deposit_facility_rate": {
+      "raw": "data\\raw\\ecb_deposit_facility_rate_2026-10-07.csv",
+      "rows": 1376,
+      "sha256": "b5cdb8c96e70810021ca8af8920ddb9c9036f4e9b39514d4f0e5e4736b11b895",
+      "status": "PASS"
+    }
+  },
+  "daily_DFR_coverage": {
+    "start": "2023-01-01",
+    "end": "2026-08-31",
+    "days": 1339,
+    "status": "PASS"
+  },
+  "six_stage_archived_response_replay": "PASS",
+  "live_network_extraction": "NOT_TESTED",
+  "output_comparison": [
+    "data/processed/banking_interest_rates_monthly.csv",
+    "data/simulated/customer_portfolio.csv",
+    "data\\analytics\\customer_pricing_opportunities.csv",
+    "data\\analytics\\pricing_regimes.csv",
+    "data\\analytics\\profitability_proxy.csv",
+    "data\\analytics\\regime_transitions.csv",
+    "data\\analytics\\retention_scenarios.csv",
+    "data\\analytics\\segment_pricing_analysis.csv",
+    "data\\analytics\\strategy_cost_comparison.csv"
+  ],
+  "failure_stops_subsequent_steps": "PASS",
+  "production_inputs": "UNCHANGED",
+  "workspace": "docs\\evidence\\release-check-t6_g9i6r",
+  "python": "3.14.3 (tags/v3.14.3:323c59a, Feb  3 2026, 16:04:56) [MSC v.1944 64 bit (AMD64)]",
+  "pandas": "3.0.6"
+}

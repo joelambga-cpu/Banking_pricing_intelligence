@@ -1,0 +1,14 @@
+relationship f4a5d2fc-73a1-46fe-8b4e-6afefbb5da92
+	joinOnDateBehavior: datePartOnly
+	fromColumn: RegimeTransitions.period
+	toColumn: LocalDateTable_180883c9-c3de-4cd1-b2ac-53ca5a414ea9.Date
+
+relationship bac6791e-5d22-4ed0-87f1-524902ad1e81
+	joinOnDateBehavior: datePartOnly
+	fromColumn: InterestRates.period
+	toColumn: LocalDateTable_69c736e8-82b0-4e30-95eb-f9216044998b.Date
+
+relationship AutoDetected_bc846ce8-7f68-4a36-b7e2-977c040cd339
+	fromColumn: Customers.segment
+	toColumn: SegmentAnalysis.segment
+

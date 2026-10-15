@@ -1,0 +1,5 @@
+pricing_regime,months,avg_deposit_rate_pct,avg_mortgage_rate_pct,avg_spread_pp,avg_deposit_gap_pp
+MARGIN PRESSURE,17,3.46,3.88,0.42,0.3
+FUNDING PRESSURE,13,2.31,3.46,1.15,-0.22
+CRITICAL PRESSURE,11,2.82,3.29,0.47,-0.23
+COMFORTABLE,3,2.71,3.9,1.19,0.12

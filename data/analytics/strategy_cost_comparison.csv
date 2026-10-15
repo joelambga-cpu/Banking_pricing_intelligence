@@ -1,0 +1,3 @@
+strategy,customers_affected,deposits_covered_eur,estimated_annual_cost_eur
+BLANKET +25 BPS,5000,229423572.5,573558.93
+TARGETED +25 BPS,348,48638727.34,121596.82

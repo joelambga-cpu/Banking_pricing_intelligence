@@ -1,0 +1,188 @@
+table InterestRates
+	lineageTag: 52b596a0-c22b-479d-a831-2c6e42b7860d
+
+	measure 'Tasso Depositi Mercato' =
+			
+			AVERAGE(InterestRates[deposit_rate_pct])
+		lineageTag: e84b6b2e-d982-4604-b659-7e4d0a4e2224
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Tasso BCE DFR' =
+			
+			AVERAGE(InterestRates[ecb_dfr_pct])
+		lineageTag: 68b58a0d-f239-4f80-8fbd-0254910a1896
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Tasso Mutui' =
+			
+			AVERAGE(InterestRates[mortgage_rate_pct])
+		lineageTag: cf5d92e2-2e9d-4510-be5b-25e5f0cc288a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Market Depositi serie' = DIVIDE(AVERAGE(InterestRates[deposit_rate_pct]), 100)
+		formatString: 0.00%
+		displayFolder: Market and Regimes
+		lineageTag: 7e244a46-6df9-59c9-aa74-62594c26d11e
+
+	measure 'Market Depositi ultimo' = VAR D = MAXX(ALL(InterestRates), InterestRates[period]) RETURN CALCULATE([Market Depositi serie], REMOVEFILTERS(InterestRates), InterestRates[period] = D)
+		formatString: 0.00%
+		displayFolder: Market and Regimes
+		lineageTag: 4672d2f4-3bf0-502c-b32e-2a9a0579c1f9
+
+	measure 'Market Depositi delta bps' = VAR D = MAXX(ALL(InterestRates), InterestRates[period]) VAR P = MAXX(FILTER(ALL(InterestRates), InterestRates[period] < D), InterestRates[period]) VAR A = CALCULATE(AVERAGE(InterestRates[deposit_rate_pct]), REMOVEFILTERS(InterestRates), InterestRates[period] = D) VAR V = CALCULATE(AVERAGE(InterestRates[deposit_rate_pct]), REMOVEFILTERS(InterestRates), InterestRates[period] = P) RETURN IF(NOT ISBLANK(P), (A - V) * 100)
+		formatString: +0" bps vs mese prec.";-0" bps vs mese prec.";0" bps vs mese prec."
+		displayFolder: Market and Regimes
+		lineageTag: d106ae4c-83c9-534f-9919-3628b2af5fce
+
+	measure 'Market BCE serie' = DIVIDE(AVERAGE(InterestRates[ecb_dfr_pct]), 100)
+		formatString: 0.00%
+		displayFolder: Market and Regimes
+		lineageTag: 1e5a7090-55af-5e3e-8417-c0263013e38d
+
+	measure 'Market BCE ultimo' = VAR D = MAXX(ALL(InterestRates), InterestRates[period]) RETURN CALCULATE([Market BCE serie], REMOVEFILTERS(InterestRates), InterestRates[period] = D)
+		formatString: 0.00%
+		displayFolder: Market and Regimes
+		lineageTag: 6a21f95b-062b-5ab2-9154-2c02226dd4cc
+
+	measure 'Market BCE delta bps' = VAR D = MAXX(ALL(InterestRates), InterestRates[period]) VAR P = MAXX(FILTER(ALL(InterestRates), InterestRates[period] < D), InterestRates[period]) VAR A = CALCULATE(AVERAGE(InterestRates[ecb_dfr_pct]), REMOVEFILTERS(InterestRates), InterestRates[period] = D) VAR V = CALCULATE(AVERAGE(InterestRates[ecb_dfr_pct]), REMOVEFILTERS(InterestRates), InterestRates[period] = P) RETURN IF(NOT ISBLANK(P), (A - V) * 100)
+		formatString: +0" bps vs mese prec.";-0" bps vs mese prec.";0" bps vs mese prec."
+		displayFolder: Market and Regimes
+		lineageTag: 6561657e-4f2f-5d6e-8f37-ae7b55d4ec67
+
+	measure 'Market Mutui serie' = DIVIDE(AVERAGE(InterestRates[mortgage_rate_pct]), 100)
+		formatString: 0.00%
+		displayFolder: Market and Regimes
+		lineageTag: 72842649-af71-5554-9a70-236bc164677f
+
+	measure 'Market Mutui ultimo' = VAR D = MAXX(ALL(InterestRates), InterestRates[period]) RETURN CALCULATE([Market Mutui serie], REMOVEFILTERS(InterestRates), InterestRates[period] = D)
+		formatString: 0.00%
+		displayFolder: Market and Regimes
+		lineageTag: 08baca8b-d096-5fa9-8354-adac1e6e8416
+
+	measure 'Market Mutui delta bps' = VAR D = MAXX(ALL(InterestRates), InterestRates[period]) VAR P = MAXX(FILTER(ALL(InterestRates), InterestRates[period] < D), InterestRates[period]) VAR A = CALCULATE(AVERAGE(InterestRates[mortgage_rate_pct]), REMOVEFILTERS(InterestRates), InterestRates[period] = D) VAR V = CALCULATE(AVERAGE(InterestRates[mortgage_rate_pct]), REMOVEFILTERS(InterestRates), InterestRates[period] = P) RETURN IF(NOT ISBLANK(P), (A - V) * 100)
+		formatString: +0" bps vs mese prec.";-0" bps vs mese prec.";0" bps vs mese prec."
+		displayFolder: Market and Regimes
+		lineageTag: 7b05356c-0688-5101-b7fe-55fbf7d0cd0b
+
+	measure 'Market Ultimo mese' = FORMAT(MAXX(ALL(InterestRates), InterestRates[period]), "mmm yyyy", "it-IT")
+		displayFolder: Market and Regimes
+		lineageTag: de1f707d-83d8-5dd7-8a5d-59a0625d7636
+
+	measure 'Market Periodo' = VAR A = MINX(ALL(InterestRates), InterestRates[period]) VAR Z = MAXX(ALL(InterestRates), InterestRates[period]) RETURN UPPER(FORMAT(A, "mmm yyyy", "it-IT") & " — " & FORMAT(Z, "mmm yyyy", "it-IT"))
+		displayFolder: Market and Regimes
+		lineageTag: 35b4be4b-f154-501d-be74-5c49af90ef32
+
+	measure 'Market Spread ultimo' = VAR D = MAXX(ALL(InterestRates), InterestRates[period]) RETURN CALCULATE(AVERAGE(InterestRates[mortgage_deposit_spread_pp]), REMOVEFILTERS(InterestRates), InterestRates[period] = D)
+		formatString: +0.00" pp";-0.00" pp";0.00" pp"
+		displayFolder: Market and Regimes
+		lineageTag: a0195bd2-a285-5d9f-84f1-5391217e4000
+
+	measure 'Market Gap ultimo' = VAR D = MAXX(ALL(InterestRates), InterestRates[period]) RETURN CALCULATE(AVERAGE(InterestRates[deposit_gap_pp]), REMOVEFILTERS(InterestRates), InterestRates[period] = D)
+		formatString: +0.00" pp";-0.00" pp";0.00" pp"
+		displayFolder: Market and Regimes
+		lineageTag: b0e3c029-2b64-5968-a242-8f20218461b8
+
+	measure 'Market Lettura gap' = VAR G = [Market Gap ultimo] RETURN "Depositi " & IF(G < 0, "sopra", IF(G > 0, "sotto", "allineati alla")) & " BCE" & IF(G <> 0, " di " & FORMAT(ABS(G) * 100, "0") & " bps", "")
+		displayFolder: Market and Regimes
+		lineageTag: 715019b8-56e0-558e-a338-1319082aff72
+
+	column period
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 98fc511a-d627-4a5b-96c8-fe1db881d259
+		summarizeBy: none
+		sourceColumn: period
+
+		variation Variazione
+			isDefault
+			relationship: bac6791e-5d22-4ed0-87f1-524902ad1e81
+			defaultHierarchy: LocalDateTable_69c736e8-82b0-4e30-95eb-f9216044998b.'Gerarchia data'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column deposit_rate_pct
+		dataType: double
+		lineageTag: b2c2cd5c-f747-450d-89f9-e38569a86b3c
+		summarizeBy: sum
+		sourceColumn: deposit_rate_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column mortgage_rate_pct
+		dataType: double
+		lineageTag: a9e19dcc-d891-4d6b-88ac-be51deef4f51
+		summarizeBy: sum
+		sourceColumn: mortgage_rate_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ecb_dfr_pct
+		dataType: double
+		lineageTag: a1c3e9e1-dcfd-4577-a828-50cd65ef4dc1
+		summarizeBy: sum
+		sourceColumn: ecb_dfr_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column deposit_gap_pp
+		dataType: double
+		lineageTag: b5f63987-a0d8-4596-8a11-272ece3314aa
+		summarizeBy: sum
+		sourceColumn: deposit_gap_pp
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column mortgage_deposit_spread_pp
+		dataType: double
+		lineageTag: 0357ea41-18b2-4c53-824c-b008d36f7f67
+		summarizeBy: sum
+		sourceColumn: mortgage_deposit_spread_pp
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition InterestRates = m
+		mode: import
+		source =
+				let
+				    Origine = Csv.Document(
+				        File.Contents("C:\Users\joela\Desktop\01.DATA BI\1.Progetti attivi\banking-pricing-intelligence\data\processed\banking_interest_rates_monthly.csv"),
+				        [Delimiter=",", Columns=6, Encoding=1252, QuoteStyle=QuoteStyle.None]
+				    ),
+				    #"Intestazioni alzate di livello" = Table.PromoteHeaders(
+				        Origine,
+				        [PromoteAllScalars=true]
+				    ),
+				    #"Modificato tipo" = Table.TransformColumnTypes(
+				        #"Intestazioni alzate di livello",
+				        {
+				            {"period", type date},
+				            {"deposit_rate_pct", type number},
+				            {"mortgage_rate_pct", type number},
+				            {"ecb_dfr_pct", type number},
+				            {"deposit_gap_pp", type number},
+				            {"mortgage_deposit_spread_pp", type number}
+				        },
+				        "en-US"
+				    )
+				in
+				    #"Modificato tipo"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigazione
+

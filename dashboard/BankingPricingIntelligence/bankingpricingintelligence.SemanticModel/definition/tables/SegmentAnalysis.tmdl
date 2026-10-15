@@ -1,0 +1,243 @@
+table SegmentAnalysis
+	lineageTag: 05dcaa28-0cba-4fc9-8c01-a582cfe2ee33
+
+	measure 'Clienti Target' =
+			
+			SUM(SegmentAnalysis[target_customers])
+		formatString: 0
+		lineageTag: edd68d76-9c58-4a17-a854-27376eabce17
+
+	measure 'Depositi Target' =
+			
+			SUM(SegmentAnalysis[target_deposits_eur])
+		lineageTag: ba6d4e3c-f198-4540-beb9-2d66704beedc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Costo annuo targeted (25bps)' =
+			
+			SUM(SegmentAnalysis[targeted_25bps_cost_eur])
+		lineageTag: 4318d72c-fa16-4d1f-b410-fade2ca6c4c5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Segment Depositi target mln EUR' = DIVIDE([Depositi Target], 1000000)
+		formatString: 0.00" mln €"
+		displayFolder: Segment Analysis
+		lineageTag: c42354c2-2e35-5450-831e-5ff5e782f7b9
+
+	measure 'Segment Costo targeted mila EUR' = DIVIDE([Costo annuo targeted (25bps)], 1000)
+		formatString: 0.0" mila €"
+		displayFolder: Segment Analysis
+		lineageTag: 78680baa-de49-56d1-b5cc-ab8404af8bd2
+
+	measure 'Segment Quota clienti target' = DIVIDE(SUM(SegmentAnalysis[target_customers]), SUM(SegmentAnalysis[total_customers]))
+		formatString: 0.0%
+		displayFolder: Segment Analysis
+		lineageTag: dd23c833-90c2-5b45-88be-723e2518b35d
+
+	measure 'Segment Quota depositi target' = DIVIDE(SUM(SegmentAnalysis[target_deposits_eur]), SUM(SegmentAnalysis[total_deposits_eur]))
+		formatString: 0.0%
+		displayFolder: Segment Analysis
+		lineageTag: d6c3532b-e083-562a-82b5-265d5367b8b5
+
+	measure 'Segment Quota clienti in calo' = DIVIDE(SUM(SegmentAnalysis[declining_customers]), SUM(SegmentAnalysis[total_customers]))
+		formatString: 0.00%
+		displayFolder: Segment Analysis
+		lineageTag: e876aae4-598b-449d-97d2-b44e5dff50ef
+
+	measure 'Segment Deflusso proxy mln EUR' = DIVIDE(SUM(SegmentAnalysis[outflow_proxy_eur]), 1000000)
+		formatString: 0.00" mln €"
+		displayFolder: Segment Analysis
+		lineageTag: ad8da782-d01e-4895-a5b8-9f8b7bc71e80
+
+	measure 'Segment Deflusso proxy su depositi' = DIVIDE(SUM(SegmentAnalysis[outflow_proxy_eur]), SUM(SegmentAnalysis[total_deposits_eur]))
+		formatString: 0.00%
+		displayFolder: Segment Analysis
+		lineageTag: 84e67fa3-324e-4f00-93f7-b1989a66f352
+
+	measure 'Esposizione deflussi %' =
+			
+			DIVIDE(
+			    SUM(SegmentAnalysis[outflow_proxy_eur]),
+			    SUM(SegmentAnalysis[total_deposits_eur])
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 61dc00c9-0052-4104-a80b-75255ba1b3fc
+
+	column segment
+		dataType: string
+		lineageTag: b4b27827-3aca-458f-80aa-cf3dce4bb734
+		summarizeBy: none
+		sourceColumn: segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column total_customers
+		dataType: int64
+		formatString: 0
+		lineageTag: d50098ba-bf36-4b2c-bc53-110c7b3d4b75
+		summarizeBy: none
+		sourceColumn: total_customers
+
+		annotation SummarizationSetBy = Automatic
+
+	column target_customers
+		dataType: int64
+		formatString: 0
+		lineageTag: a481bb93-82fa-406e-a196-1bf09559d022
+		summarizeBy: none
+		sourceColumn: target_customers
+
+		annotation SummarizationSetBy = Automatic
+
+	column target_customer_pct
+		dataType: double
+		lineageTag: e7bb6a92-bbdb-461c-8df9-74742ad7fb6a
+		summarizeBy: none
+		sourceColumn: target_customer_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column total_deposits_eur
+		dataType: double
+		lineageTag: d1967842-3c91-42b3-bfc1-fb8f52f42a79
+		summarizeBy: none
+		sourceColumn: total_deposits_eur
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column target_deposits_eur
+		dataType: double
+		lineageTag: a12e4705-518b-4fb0-847c-1bd76850ec72
+		summarizeBy: none
+		sourceColumn: target_deposits_eur
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column target_deposit_pct
+		dataType: double
+		lineageTag: 958e2f22-05eb-4f3e-bb06-7d5244b8135e
+		summarizeBy: none
+		sourceColumn: target_deposit_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column target_avg_outflow_90d_pct
+		dataType: double
+		lineageTag: 1e43b0f2-9ef8-4505-804e-bb92c1a0664f
+		summarizeBy: none
+		sourceColumn: target_avg_outflow_90d_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column targeted_25bps_cost_eur
+		dataType: double
+		lineageTag: 28807aaf-a949-47f3-9ee8-11f5112ae362
+		summarizeBy: none
+		sourceColumn: targeted_25bps_cost_eur
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column declining_customers
+		dataType: int64
+		formatString: 0
+		lineageTag: e79c0ba3-8ac5-480f-8774-edc53f3ba049
+		summarizeBy: none
+		sourceColumn: declining_customers
+
+		annotation SummarizationSetBy = Automatic
+
+	column declining_customer_pct
+		dataType: double
+		lineageTag: f468a89d-5d4f-4235-8d89-fb513f291154
+		summarizeBy: none
+		sourceColumn: declining_customer_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column outflow_proxy_eur
+		dataType: double
+		lineageTag: 27e0775a-c759-4c2c-b17b-09782fe6c5af
+		summarizeBy: none
+		sourceColumn: outflow_proxy_eur
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column outflow_proxy_pct_of_deposits
+		dataType: double
+		lineageTag: deee6592-5741-4bd1-a0ec-b09a0aedac57
+		summarizeBy: none
+		sourceColumn: outflow_proxy_pct_of_deposits
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column target_outflow_proxy_eur
+		dataType: double
+		lineageTag: 8137885d-9dae-4932-b9b6-c19a6e1e283f
+		summarizeBy: none
+		sourceColumn: target_outflow_proxy_eur
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition SegmentAnalysis = m
+		mode: import
+		source =
+				let
+				    Origine = Csv.Document(
+				        File.Contents("C:\Users\joela\Desktop\01.DATA BI\1.Progetti attivi\banking-pricing-intelligence\data\analytics\segment_pricing_analysis.csv"),
+				        [Delimiter=",", Columns=14, Encoding=1252, QuoteStyle=QuoteStyle.None]
+				    ),
+				
+				    #"Intestazioni alzate di livello" = Table.PromoteHeaders(
+				        Origine,
+				        [PromoteAllScalars=true]
+				    ),
+				
+				    #"Modificato tipo" = Table.TransformColumnTypes(
+				        #"Intestazioni alzate di livello",
+				        {
+				            {"segment", type text},
+				            {"total_customers", Int64.Type},
+				            {"target_customers", Int64.Type},
+				            {"target_customer_pct", type number},
+				            {"total_deposits_eur", type number},
+				            {"target_deposits_eur", type number},
+				            {"target_deposit_pct", type number},
+				            {"target_avg_outflow_90d_pct", type number},
+				            {"targeted_25bps_cost_eur", type number},
+				            {"declining_customers", Int64.Type},
+				            {"declining_customer_pct", type number},
+				            {"outflow_proxy_eur", type number},
+				            {"outflow_proxy_pct_of_deposits", type number},
+				            {"target_outflow_proxy_eur", type number}
+				        },
+				        "en-US"
+				    )
+				in
+				    #"Modificato tipo"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigazione
+

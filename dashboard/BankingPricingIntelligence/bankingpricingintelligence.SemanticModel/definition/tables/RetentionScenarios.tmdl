@@ -1,0 +1,160 @@
+table RetentionScenarios
+	lineageTag: 30d22689-3fe6-4250-8d16-e5b71adf89c6
+
+	measure 'Scenario Costo annuo EUR' = SUMX(VALUES(RetentionScenarios[strategy]), CALCULATE(MAX(RetentionScenarios[annual_repricing_cost_eur])))
+		formatString: #,0.00
+		displayFolder: Retention Scenarios
+		lineageTag: 3508716a-4f0d-5764-9605-3495d59c51e3
+
+	measure 'Scenario Depositi trattenuti EUR' = IF(HASONEVALUE(RetentionScenarios[scenario]), SUM(RetentionScenarios[estimated_deposits_retained_eur]))
+		formatString: #,0.00
+		displayFolder: Retention Scenarios
+		lineageTag: 2367259c-e646-547f-b799-8f42aed72373
+
+	measure 'Scenario Costo per EUR' = DIVIDE([Scenario Costo annuo EUR], [Scenario Depositi trattenuti EUR])
+		formatString: 0.0000
+		displayFolder: Retention Scenarios
+		lineageTag: 6f11fea6-a3a6-5835-8d5b-c4aa1bb72134
+
+	measure 'Scenario Ipotesi retention' = IF(HASONEVALUE(RetentionScenarios[scenario]), DIVIDE(SUM(RetentionScenarios[estimated_deposits_retained_eur]), SUM(RetentionScenarios[outflow_proxy_eur])))
+		formatString: 0%
+		displayFolder: Retention Scenarios
+		lineageTag: f8972f02-8115-5495-ae2b-8dfddebf99c2
+
+	measure 'Scenario Clienti trattati' = SUMX(VALUES(RetentionScenarios[strategy]), CALCULATE(MAX(RetentionScenarios[customers_treated])))
+		formatString: #,0
+		displayFolder: Retention Scenarios
+		lineageTag: 2c55296a-c2bc-5d24-be0d-7fa3bae8a3ef
+
+	measure 'Scenario Costo mila EUR' = DIVIDE([Scenario Costo annuo EUR], 1000)
+		formatString: 0.0
+		displayFolder: Retention Scenarios
+		lineageTag: 1265e4eb-1795-5348-9799-d85cfd9c95ec
+
+	measure 'Scenario Depositi mln EUR' = DIVIDE([Scenario Depositi trattenuti EUR], 1000000)
+		formatString: 0.00
+		displayFolder: Retention Scenarios
+		lineageTag: 170a99ba-aa59-594a-9dab-9d95677748f1
+
+	measure 'Scenario Blanket mln EUR' = CALCULATE([Scenario Depositi mln EUR], RetentionScenarios[strategy] = "BLANKET")
+		formatString: 0.00
+		displayFolder: Retention Scenarios
+		lineageTag: 934ea28a-35d8-5fbf-b671-1a12fcb97e56
+
+	measure 'Scenario Targeted mln EUR' = CALCULATE([Scenario Depositi mln EUR], RetentionScenarios[strategy] = "TARGETED")
+		formatString: 0.00
+		displayFolder: Retention Scenarios
+		lineageTag: ec41d1b6-cbce-56a8-8215-d2b473825070
+
+	measure 'Scenario Blanket costo unitario' = CALCULATE([Scenario Costo per EUR], RetentionScenarios[strategy] = "BLANKET")
+		formatString: 0.0000
+		displayFolder: Retention Scenarios
+		lineageTag: 83737bfa-b70b-53f9-910b-1499e04e687c
+
+	measure 'Scenario Targeted costo unitario' = CALCULATE([Scenario Costo per EUR], RetentionScenarios[strategy] = "TARGETED")
+		formatString: 0.0000
+		displayFolder: Retention Scenarios
+		lineageTag: 31b89886-ee73-5e8c-a1cd-a9a896a8e555
+
+	measure 'Scenario Base targeted mln EUR' = CALCULATE([Scenario Targeted mln EUR], RetentionScenarios[scenario] = "BASE")
+		formatString: 0.00" mln €"
+		displayFolder: Retention Scenarios
+		lineageTag: 71504e01-cc0e-5617-847b-dd15cfe75bde
+
+	measure 'Scenario Targeted costo annuo mila EUR' = CALCULATE([Scenario Costo mila EUR], RetentionScenarios[strategy] = "TARGETED")
+		formatString: 0.0" mila €"
+		displayFolder: Retention Scenarios
+		lineageTag: 009d2eac-6733-51fb-b848-ac1d68dd7e50
+
+	measure 'Scenario Base riduzione costo unitario' = CALCULATE(1 - DIVIDE([Scenario Targeted costo unitario], [Scenario Blanket costo unitario]), RetentionScenarios[scenario] = "BASE")
+		formatString: 0.0%
+		displayFolder: Retention Scenarios
+		lineageTag: 2e97f1a2-2dba-5d98-a98c-b290a45e99e1
+
+	column strategy
+		dataType: string
+		lineageTag: 392fb93e-6384-4904-96b8-cb122076a084
+		summarizeBy: none
+		sourceColumn: strategy
+
+		annotation SummarizationSetBy = Automatic
+
+	column scenario
+		dataType: string
+		lineageTag: 228aefd1-ba4d-4f4b-9cfe-cda3ba6f6c78
+		summarizeBy: none
+		sourceColumn: scenario
+
+		annotation SummarizationSetBy = Automatic
+
+	column customers_treated
+		dataType: int64
+		formatString: 0
+		lineageTag: 3dac285d-1ae9-44ba-b95a-0c6a1673c4c1
+		summarizeBy: sum
+		sourceColumn: customers_treated
+
+		annotation SummarizationSetBy = Automatic
+
+	column annual_repricing_cost_eur
+		dataType: double
+		formatString: 0
+		lineageTag: 95c43270-c67f-4cc6-9662-2825bdb52746
+		summarizeBy: sum
+		sourceColumn: annual_repricing_cost_eur
+
+		annotation SummarizationSetBy = Automatic
+
+	column outflow_proxy_eur
+		dataType: double
+		formatString: 0
+		lineageTag: acac01be-a5ee-44ab-b6cd-1d43e67041f4
+		summarizeBy: sum
+		sourceColumn: outflow_proxy_eur
+
+		annotation SummarizationSetBy = Automatic
+
+	column estimated_deposits_retained_eur
+		dataType: double
+		formatString: 0
+		lineageTag: cbb0d63b-f8b3-4110-b254-89da5c8ca8a2
+		summarizeBy: sum
+		sourceColumn: estimated_deposits_retained_eur
+
+		annotation SummarizationSetBy = Automatic
+
+	column cost_per_eur_retained
+		dataType: double
+		formatString: 0
+		lineageTag: 0de3a28f-7f3c-4b43-a1fc-dee5bf950961
+		summarizeBy: sum
+		sourceColumn: cost_per_eur_retained
+
+		annotation SummarizationSetBy = Automatic
+
+	partition RetentionScenarios = m
+		mode: import
+		source =
+				let
+				    Origine = Csv.Document(File.Contents("C:\Users\joela\Desktop\01.DATA BI\1.Progetti attivi\banking-pricing-intelligence\data\analytics\retention_scenarios.csv"),[Delimiter=",", Columns=7, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Intestazioni alzate di livello" = Table.PromoteHeaders(Origine, [PromoteAllScalars=true]),
+				    #"Modificato tipo" = Table.TransformColumnTypes(
+				    #"Intestazioni alzate di livello",
+				    {
+				        {"strategy", type text},
+				        {"scenario", type text},
+				        {"customers_treated", Int64.Type},
+				        {"annual_repricing_cost_eur", type number},
+				        {"outflow_proxy_eur", type number},
+				        {"estimated_deposits_retained_eur", type number},
+				        {"cost_per_eur_retained", type number}
+				    },
+				    "en-US"
+				)
+				in
+				    #"Modificato tipo"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigazione
+
