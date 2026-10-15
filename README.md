@@ -202,7 +202,6 @@ The revised orchestrator passed a six-stage isolated replay using archived ECB H
 
 Run `python src/quality/verify_business_answers.py` to reproduce queries 07/08/10 against the existing database and independently recompute results from the customer CSV using decimal arithmetic. After all checks pass, this writes `docs/evidence/business_answers.json` and updates only the segment export. It does not refresh ECB data, regenerate customers or validate native Power BI rendering.
 
-The authoritative report location confirmed by the user is `C:\Users\joela\Downloads\BankingPricingIntelligence_QuattroPagine`. Its seven CSV source paths have been aligned with the current project directory. Original model definitions are retained in the local backup `docs/evidence/model_before_business_answers.zip`; exclude this machine-specific backup from the publication package.
 
 ### Presentation and release
 
